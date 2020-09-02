@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/download-file/{id}', 'AdminController@readFile');
 Auth::routes();
 
 Route::get("/read/{id}", function($id){

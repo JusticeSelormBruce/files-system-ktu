@@ -307,7 +307,7 @@ class AdminController extends Controller
         $path = Storage::putFile('memo/', $request->path);
         $memo_path = $request->path->storeAs("public", $path);
         $data["path"] = $memo_path;
-     
+
         foreach ($data['reciever'] as $list) {
             if ($list == 1) {
                 $allusers = User::where("id", "!=", Auth::id())->get()->all();
@@ -318,9 +318,9 @@ class AdminController extends Controller
             } elseif ($list == 2 || $list == 3  || $list == 4  || $list == 5  || $list == 6) {
                 $this->getUsers($list, $data);
             } else {
-               
+
                 $this->getUsersByEmail($data);
-            break;
+                break;
             }
         }
 
@@ -351,18 +351,29 @@ class AdminController extends Controller
     public function getUsersByEmail($data)
     {
         foreach ($data['reciever'] as $list) {
-            $user =  User::where('email',$list)->where("id", "!=", Auth::id())->get()->take(1)->first();
-            if($user != null){
+            $user =  User::where('email', $list)->where("id", "!=", Auth::id())->get()->take(1)->first();
+            if ($user != null) {
                 $data['reciever'] = $user->id;
                 Memo::create($data);
-            }else{
+            } else {
                 continue;
             }
-            
         }
         return back()->with('msg', 'Sent Successfully');
-        
-        
-    
+    }
+
+    public function readFile($id)
+    {
+      
+        $data =  Memo::find($id);
+        if ($data != null) {
+             Memo::find($id)->update(['status' => 1]);
+             $mem =Memo::find($id);
+        } else {
+            Leter::find($id)->update(['status' => 1]);
+            $mem =  Leter::find($id);
+        }
+
+        return Storage::download($mem->path);
     }
 }

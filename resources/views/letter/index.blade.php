@@ -53,7 +53,13 @@
                       @endif
                     
                       @endforeach
-                        <td><a href="{{Storage::url($item->path)}}">Open Memo</a></td>
+                        <td><a href="{{Storage::url($item->path)}}">download File</a></td>
+                        <td>@if ($item->status == 0)
+                          <span class="h6 text-success">  Recieved</span>
+                        @else
+                        <span class="h6 text-warning">   Read</span>
+                           
+                        @endif</td>
                         <td>{{$item->created_at}}</td>
                     </tr>
                     @endforeach
@@ -67,7 +73,7 @@
             <table id="table_id" style="font-size: small!important; ">
                 <thead>
                 <tr>
-                    <th> Sent ByTo</th>
+                    <th> Sent By</th>
                     <th>Letter</th>
                     <th>Date and Time</th>
                 </tr>
@@ -82,7 +88,7 @@
                   
                     @endforeach
                    
-                    <td><a href="{{Storage::url($item->path)}}">Open Memo</a></td>
+                    <td onclick="state"><a href="/download-file/{{$item->id}}">Download File</a></td>
                     <td>{{$item->created_at}}</td>
                 </tr>
               @endforeach
